@@ -52,6 +52,8 @@
 
         android:layout_alignParentBottom="true"
         android:background="?android:attr/windowBackground"
+        app:itemIconTint="@drawable/nav_icon_color_state"
+        app:itemTextColor="@drawable/nav_icon_color_state"
         app:menu="@menu/navigation" />
 
     <com.github.clans.fab.FloatingActionButton

@@ -198,6 +198,7 @@ public class TaskViewFragment extends Fragment implements View.OnClickListener{
     }
 
     void setTaskLayout(){
+        layout.findViewById(R.id.comment_button).setOnClickListener(this);
         dbRef.child("tasks/"+TASK_ID).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {

@@ -59,7 +59,8 @@ public class AlarmReceiver extends BroadcastReceiver {
 
 
         final NotificationCompat.Builder mNotifyBuilder = new NotificationCompat.Builder(
-                context).setSmallIcon(R.mipmap.ic_launcher)
+                context)
+                .setSmallIcon(R.mipmap.ic_launcher)
                 .setSound(alarmSound)
                 .setAutoCancel(true).setWhen(when)
                 .setContentIntent(resultPendingIntent);

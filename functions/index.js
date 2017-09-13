@@ -42,9 +42,6 @@ exports.pushTask=functions.database.ref("tasks/{task_id}").onCreate(event =>{
                     body: content,
                     sound: 'default',
                     badge: '1'
-                },
-                data:{
-                    task_id:task_id
                 }
             };
             var pr1=admin.messaging().sendToDevice(tokens, payload);
@@ -64,7 +61,7 @@ exports.pushTask=functions.database.ref("tasks/{task_id}").onCreate(event =>{
 });
 
 function loadStudents(class_id) {
-    let dbRef = admin.database().ref("classes/"+class_id+"/students");//.child(class_id).child('students');
+    let dbRef = admin.database().ref("classes/"+class_id+"/students");
     return dbRef.once('value').then(snap => {
         var tokens = [];
         var ref=admin.database().ref('students');
@@ -79,6 +76,7 @@ function loadStudents(class_id) {
             results.forEach(result=>{
                 tokens.push(result.val());
             });
+            console.log("tokens",tokens);
             return tokens;
         });
 

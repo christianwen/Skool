@@ -21,6 +21,9 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
         super.onMessageReceived(remoteMessage);
+        RemoteMessage.Notification notification = remoteMessage.getNotification();
+        if(notification!=null)
+        Log.d("notification",notification.toString());
         Map<String,String> data = remoteMessage.getData();
         Log.d("data",data.toString());
         String task_id = data.get("task_id");
@@ -28,8 +31,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         Log.d("task_id",task_id);
 
         Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.HOUR_OF_DAY, 21);
-        calendar.set(Calendar.MINUTE, 40);
+        calendar.set(Calendar.HOUR_OF_DAY, 20);
+        calendar.set(Calendar.MINUTE, 0);
         calendar.set(Calendar.SECOND, 0);
         Intent intent1 = new Intent(MyFirebaseMessagingService.this, AlarmReceiver.class);
         intent1.putExtra("task_id",task_id);

@@ -128,6 +128,11 @@ public class ViewTaskActivity extends Activity implements View.OnClickListener,T
         imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
     }
 
+    void showKeyboard(View view){
+        InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+        imm.showSoftInput(view, InputMethodManager.SHOW_IMPLICIT);
+    }
+
     @Override
     public void onClick(View view) {
         if(view.getId()==R.id.confirm_count){
@@ -146,6 +151,7 @@ public class ViewTaskActivity extends Activity implements View.OnClickListener,T
     @Override
     public void onCommentButtonClicked() {
         Log.d("action","click on comment button");
-        findViewById(R.id.comment_edit_text).requestFocus();
+        findViewById(R.id.comment_edit_text).performClick();
+
     }
 }

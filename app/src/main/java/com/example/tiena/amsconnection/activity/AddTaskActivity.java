@@ -148,6 +148,7 @@ public class AddTaskActivity extends Activity implements TaskDeadlineDialogFragm
                     for(Bitmap bitmap : bitmaps){
                         count++;
                         ByteArrayOutputStream baos = new ByteArrayOutputStream();
+
                         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
                         byte[] data = baos.toByteArray();
 
@@ -194,8 +195,8 @@ public class AddTaskActivity extends Activity implements TaskDeadlineDialogFragm
                 return;
             }
             try {
-                InputStream inputStream = getContentResolver().openInputStream(data.getData());
-                Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
+                //InputStream inputStream = getContentResolver().openInputStream(data.getData());
+                Bitmap bitmap = BitmapHelper.compressImage(data.getData().toString(),AddTaskActivity.this);
                 bitmaps.add(bitmap);
                 int bitmapHeight = bitmap.getHeight();
                 int bitmapWidth = bitmap.getWidth();
@@ -234,7 +235,7 @@ public class AddTaskActivity extends Activity implements TaskDeadlineDialogFragm
 
                 (findViewById(R.id.add_photo_button)).setVisibility(View.VISIBLE);
 
-            }catch (FileNotFoundException e){
+            }catch (Exception e){
                 e.printStackTrace();
             }
             //Now you can do whatever you want with your inpustream, save it as file, upload to a server, decode a bitmap...
