@@ -2,6 +2,7 @@ package com.example.tiena.amsconnection.viewholder;
 
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -27,17 +28,16 @@ import com.example.tiena.amsconnection.helperclass.CircleTransform;
  */
 
 public class NotiHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
-    private TextView mNotiTitle,mNotiContent,mNotiPublisherName,mNotiDeadline;
+    private TextView mNotiContent,mNotiDeadline;
     private ImageView mNotiPhoto;
     private String key;
 
 
     public NotiHolder(View itemView){
         super(itemView);
-        mNotiTitle = itemView.findViewById(R.id.noti_title);
+
         mNotiContent = itemView.findViewById(R.id.noti_content);
         mNotiPhoto = itemView.findViewById(R.id.noti_publisher_avatar);
-        mNotiPublisherName = itemView.findViewById(R.id.noti_publisher_name);
         mNotiDeadline = itemView.findViewById(R.id.noti_deadline);
         itemView.setOnClickListener(this);
     }
@@ -49,7 +49,8 @@ public class NotiHolder extends RecyclerView.ViewHolder implements View.OnClickL
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Task task = dataSnapshot.getValue(Task.class);
-                mNotiContent.setText(task.content);
+                final String content = task.content;
+                //mNotiContent.setText(task.content);
                 if(!task.deadline.equals("")){
                     setDeadline(task.deadline);
                 }
@@ -70,7 +71,11 @@ public class NotiHolder extends RecyclerView.ViewHolder implements View.OnClickL
                         .addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
-                                mNotiPublisherName.setText(dataSnapshot.getValue(String.class));
+                                String text = "<b>"+dataSnapshot.getValue(String.class)+"</b>"+" added a new task: ";
+                                int max_length = content.length() > 20 ? 20 : content.length();
+                                text += '"' + content.substring(0,max_length) +".."+'"';
+
+                                mNotiContent.setText(Html.fromHtml(text));
                             }
 
                             @Override

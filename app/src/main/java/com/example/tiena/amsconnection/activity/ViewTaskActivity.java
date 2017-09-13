@@ -47,8 +47,6 @@ public class ViewTaskActivity extends Activity implements View.OnClickListener,T
 
     LinearLayout photoContainer,photoContainer2;
     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-    int[] icons = {R.drawable.ic_confirm_active,R.drawable.ic_confirm_inactive,R.drawable.ic_comment_active,R.drawable.ic_comment_inactive};
-    int[] colors = {R.color.ConfirmActive,R.color.ActionInactive,R.color.CommentActive,R.color.ActionInactive};
     private FirebaseRecyclerAdapter mAdapter;
     RecyclerView commentsRecycler;
 
@@ -67,18 +65,6 @@ public class ViewTaskActivity extends Activity implements View.OnClickListener,T
         setComments();
     }
 
-    boolean confirmed = false;
-
-
-
-    void toggleConfirm(boolean confirmed){
-        final Button confirmBtn = findViewById(R.id.confirm_button);
-
-        int command = confirmed?0:1;
-        confirmBtn.setTextColor(getResources().getColor(colors[command]));
-        Drawable icon = getResources().getDrawable( icons[command] );
-        confirmBtn.setCompoundDrawablesWithIntrinsicBounds(icon, null, null, null);
-    }
 
     void setCommentEdt(){
         final EditText commentEdt = findViewById(R.id.comment_edit_text);

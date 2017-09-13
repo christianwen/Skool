@@ -153,6 +153,7 @@ public class AddTaskActivity extends Activity implements TaskDeadlineDialogFragm
                         byte[] data = baos.toByteArray();
 
                         UploadTask uploadTask = storageRef.child(count+"").putBytes(data);
+                        final int finalCount = count;
                         uploadTask.addOnFailureListener(new OnFailureListener() {
                             @Override
                             public void onFailure(@NonNull Exception e) {
@@ -165,14 +166,17 @@ public class AddTaskActivity extends Activity implements TaskDeadlineDialogFragm
                                 Uri downloadUrl = taskSnapshot.getDownloadUrl();
                                 dbRef.child(key+"/photo_urls").push().setValue(downloadUrl.toString());
                                 Log.d("photo_url",downloadUrl.toString());
+                                if(finalCount ==bitmaps.size()){
+                                    Toast.makeText(AddTaskActivity.this, "Add task successfully", Toast.LENGTH_SHORT).show();
+                                    Intent intent = new Intent(AddTaskActivity.this,ViewTaskActivity.class);
+                                    intent.putExtra("key",key);
+                                    startActivity(intent);
+                                }
                             }
                         });
                     }
                 }
-                Toast.makeText(AddTaskActivity.this, "Add task successfully", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(AddTaskActivity.this,ViewTaskActivity.class);
-                intent.putExtra("key",key);
-                startActivity(intent);
+
             }
         });
 
