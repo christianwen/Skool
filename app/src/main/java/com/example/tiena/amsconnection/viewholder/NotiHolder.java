@@ -8,6 +8,12 @@ import android.widget.TextView;
 
 import com.example.tiena.amsconnection.R;
 import com.example.tiena.amsconnection.activity.ViewTaskActivity;
+import com.example.tiena.amsconnection.item.Task;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
 import java.text.ParseException;
@@ -36,26 +42,53 @@ public class NotiHolder extends RecyclerView.ViewHolder implements View.OnClickL
         itemView.setOnClickListener(this);
     }
 
-    public void setKey(String key) {
+    public void init(String key){
         this.key = key;
+        final DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference();
+        dbRef.child("tasks/"+key).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Task task = dataSnapshot.getValue(Task.class);
+                mNotiContent.setText(task.content);
+                if(!task.deadline.equals("")){
+                    setDeadline(task.deadline);
+                }
+                dbRef.child("students/"+task.user_id+"/photo_url")
+                        .addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                //Toast.makeText(getActivity(), dataSnapshot.getValue().toString(), Toast.LENGTH_SHORT).show();
+                                Picasso.with(itemView.getContext()).load(dataSnapshot.getValue(String.class)).transform(new CircleTransform()).into(mNotiPhoto);
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+
+                            }
+                        });
+                dbRef.child("students/"+dataSnapshot.child("user_id").getValue(String.class)+"/name")
+                        .addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                mNotiPublisherName.setText(dataSnapshot.getValue(String.class));
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+
+                            }
+                        });
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
-    public void setTitle(String noti_title){
-        mNotiTitle.setText(noti_title);
-    }
 
-    public void setContent(String noti_content){
-        mNotiContent.setText(noti_content);
-    }
-
-    public void setImage(String image_url){
-        Picasso.with(itemView.getContext()).load(image_url).transform(new CircleTransform()).into(mNotiPhoto);
-    }
-
-    public void setPublisherName(String publisherName){
-        String str="- by "+publisherName;
-        mNotiPublisherName.setText(str);
-    }
 
     public void setDeadline(String deadline){
         SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US);

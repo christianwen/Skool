@@ -1,13 +1,16 @@
 package com.example.tiena.amsconnection.activity;
 
 import android.app.Activity;
-import android.graphics.Bitmap;
+import android.app.FragmentTransaction;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -21,11 +24,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.tiena.amsconnection.R;
+import com.example.tiena.amsconnection.fragment.TaskViewFragment;
 import com.example.tiena.amsconnection.helperclass.AnythingHelper;
 import com.example.tiena.amsconnection.helperclass.CircleTransform;
 import com.example.tiena.amsconnection.helperclass.SquareTransform;
 import com.example.tiena.amsconnection.item.Comment;
-import com.example.tiena.amsconnection.item.Task;
 import com.example.tiena.amsconnection.viewholder.CommentHolder;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.auth.FirebaseAuth;
@@ -35,14 +38,9 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
 
-import java.util.ArrayList;
-import java.util.List;
-
-public class ViewTaskActivity extends Activity {
+public class ViewTaskActivity extends Activity implements View.OnClickListener,TaskViewFragment.OnFragmentInteractionListener{
 
     String KEY;
     DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference();
@@ -64,33 +62,14 @@ public class ViewTaskActivity extends Activity {
         commentsRecycler = findViewById(R.id.comments_recycler);
         commentsRecycler.setLayoutManager(new LinearLayoutManager(this));
         KEY = getIntent().getExtras().getString("key",null);
-        setTaskLayout();
-        setStatistics();
-        setConfirmBtn();
+        getFragmentManager().beginTransaction().add(R.id.fragment_container, TaskViewFragment.newInstance(KEY)).commit();
         setCommentEdt();
         setComments();
     }
 
     boolean confirmed = false;
 
-    void setConfirmBtn(){
-        final Button confirmBtn = findViewById(R.id.confirm_button);
-        confirmBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                confirmed=!confirmed;
-                toggleConfirm(confirmed);
-                String user_id = user.getUid();
-                if(confirmed){
-                    dbRef.child("tasks/"+KEY+"/confirmations/"+user_id).setValue(true);
-                }
-                else{
-                    dbRef.child("tasks/"+KEY+"/confirmations/"+user_id).setValue(null);
-                }
 
-            }
-        });
-    }
 
     void toggleConfirm(boolean confirmed){
         final Button confirmBtn = findViewById(R.id.confirm_button);
@@ -99,144 +78,6 @@ public class ViewTaskActivity extends Activity {
         confirmBtn.setTextColor(getResources().getColor(colors[command]));
         Drawable icon = getResources().getDrawable( icons[command] );
         confirmBtn.setCompoundDrawablesWithIntrinsicBounds(icon, null, null, null);
-    }
-
-
-    void setTaskPublisherInfo(String user_id){
-        dbRef.child("students/"+user_id+"/name").addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                ((TextView) findViewById(R.id.user_name)).setText(dataSnapshot.getValue(String.class));
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-
-        dbRef.child("students/"+user_id+"/photo_url").addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                ImageView imageView = findViewById(R.id.user_avatar);
-                Picasso.with(ViewTaskActivity.this).load(dataSnapshot.getValue(String.class)).transform(new CircleTransform()).into(imageView);
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-    }
-
-    void setTaskLayout(){
-        dbRef.child("tasks/"+KEY).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-
-                String publisher_id = dataSnapshot.child("user_id").getValue(String.class);
-                setTaskPublisherInfo(publisher_id);
-
-                Long time_created = dataSnapshot.child("time_created").getValue(Long.class);
-                if(time_created!=null){
-                    String time = AnythingHelper.convertTimestampToDate(time_created);
-                    ((TextView) findViewById(R.id.task_time_created)).setText(time);
-                }
-
-                if(dataSnapshot.child("confirmations/"+user.getUid()).getValue()!=null){
-                    confirmed=true;
-                    toggleConfirm(true);
-                }
-
-                ((TextView) findViewById(R.id.task_content)).setText(dataSnapshot.child("content").getValue(String.class));
-
-
-                DataSnapshot photoUrls = dataSnapshot.child("photo_urls");
-                if(photoUrls!=null) {
-                    int photos_count=dataSnapshot.child("photos_count").getValue(int.class);
-                    boolean hasManyPhotos = !(photos_count==1);
-                    int count=0;
-                    for (DataSnapshot photoUrl : photoUrls.getChildren()) {
-                        count++;
-                        if(count==5)return;
-                        String url = photoUrl.getValue(String.class);
-                        ImageView imageView = new ImageView(ViewTaskActivity.this);
-                        LinearLayout.LayoutParams params;
-                        if(hasManyPhotos){
-                            params = new LinearLayout.LayoutParams(512, 512);
-                            params.setMargins(10,10,10,10);
-                            imageView.setLayoutParams(params);
-                            if(photos_count>4&&count==4){
-                                Picasso.with(ViewTaskActivity.this).load(url).transform(new SquareTransform(photos_count-4)).into(imageView);
-                            }
-                            else{
-                                Picasso.with(ViewTaskActivity.this).load(url).transform(new SquareTransform()).into(imageView);
-
-                            }
-                        }
-                        else {
-                            params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                            imageView.setLayoutParams(params);
-                            Picasso.with(ViewTaskActivity.this).load(url).into(imageView);
-                        }
-                        if(count<3) {
-                            photoContainer.addView(imageView);
-                        }else{
-                            photoContainer2.addView(imageView);
-                        }
-                    }
-
-                }
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-    }
-
-    void setStatistics(){
-        dbRef.child("tasks/"+KEY+"/confirmations_count").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                Long confirmations_count = dataSnapshot.getValue(Long.class);
-                TextView confirmationsCountTv = findViewById(R.id.confirm_count);
-                if(confirmations_count!=null&&confirmations_count>0){
-                    confirmationsCountTv.setText(confirmations_count+" confirmed");
-                }
-                else{
-                    confirmationsCountTv.setText("");
-
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-
-        dbRef.child("tasks/"+KEY+"/comments_count").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                Long comments_count = dataSnapshot.getValue(Long.class);
-                TextView confirmationsCountTv = findViewById(R.id.comments_count);
-                if(comments_count!=null&&comments_count>0){
-                    String suffix = comments_count == 1 ? "comment" : "comments";
-                    confirmationsCountTv.setText(comments_count + " " + suffix);
-                }
-                else{
-                    confirmationsCountTv.setText("");
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
     }
 
     void setCommentEdt(){
@@ -287,6 +128,24 @@ public class ViewTaskActivity extends Activity {
         imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
     }
 
+    @Override
+    public void onClick(View view) {
+        if(view.getId()==R.id.confirm_count){
+            Intent intent = new Intent(ViewTaskActivity.this,CheckConfirmationsActivity.class);
+            intent.putExtra("task_id",KEY);
+            startActivity(intent);
 
+        }
+    }
 
+    @Override
+    public void onFragmentInteraction(Uri uri) {
+
+    }
+
+    @Override
+    public void onCommentButtonClicked() {
+        Log.d("action","click on comment button");
+        findViewById(R.id.comment_edit_text).requestFocus();
+    }
 }

@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import com.example.tiena.amsconnection.R;
+import com.example.tiena.amsconnection.item.Task;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -52,7 +53,10 @@ public class NotiFragment extends Fragment {
 
         View notiFragmentLayout=inflater.inflate(R.layout.noti_fragment,container,false);
         notiList=notiFragmentLayout.findViewById(R.id.notiList);
-        notiList.setLayoutManager(new LinearLayoutManager(activity));
+        LinearLayoutManager manager = new LinearLayoutManager(activity);
+        manager.setReverseLayout(true);
+        manager.setStackFromEnd(true);
+        notiList.setLayoutManager(manager);
         notiList.setAdapter(mAdapter);
         mDatabase=FirebaseDatabase.getInstance();
         FirebaseUser user= FirebaseAuth.getInstance().getCurrentUser();
@@ -91,6 +95,7 @@ public class NotiFragment extends Fragment {
     }
 
     void setRecyclerAdapter(){
+
         mAdapter = new FirebaseRecyclerAdapter<Boolean, NotiHolder>(
                 Boolean.class,
                 R.layout.notification,
@@ -99,48 +104,10 @@ public class NotiFragment extends Fragment {
             @Override
             public void populateViewHolder(final NotiHolder holder, Boolean value, int position) {
                 String key=mAdapter.getRef(position).getKey();
-                holder.setKey(key);
-                refToTasks.child(key).addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        holder.setContent(dataSnapshot.child("content").getValue(String.class));
-                        holder.setTitle(dataSnapshot.child("title").getValue(String.class));
-                        holder.setDeadline(dataSnapshot.child("deadline").getValue(String.class));
-                        mDatabase.getReference("students/"+dataSnapshot.child("user_id").getValue(String.class)+"/photo_url")
-                                .addListenerForSingleValueEvent(new ValueEventListener() {
-                                    @Override
-                                    public void onDataChange(DataSnapshot dataSnapshot) {
-                                        //Toast.makeText(getActivity(), dataSnapshot.getValue().toString(), Toast.LENGTH_SHORT).show();
-                                        holder.setImage(dataSnapshot.getValue(String.class));
-                                    }
-
-                                    @Override
-                                    public void onCancelled(DatabaseError databaseError) {
-
-                                    }
-                                });
-                        mDatabase.getReference("students/"+dataSnapshot.child("user_id").getValue(String.class)+"/name")
-                                .addListenerForSingleValueEvent(new ValueEventListener() {
-                                    @Override
-                                    public void onDataChange(DataSnapshot dataSnapshot) {
-                                        holder.setPublisherName(dataSnapshot.getValue(String.class));
-                                    }
-
-                                    @Override
-                                    public void onCancelled(DatabaseError databaseError) {
-
-                                    }
-                                });
-                    }
-
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-
-                    }
-                });
-
+                holder.init(key);
             }
         };
+
         notiList.setAdapter(mAdapter);
     }
 

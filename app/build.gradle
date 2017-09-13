@@ -64,6 +64,7 @@ dependencies {
     compile 'com.ramotion.foldingcell:folding-cell:1.2.1'
     compile 'com.github.clans:fab:1.6.4'
     compile 'com.google.firebase:firebase-storage:11.2.0'
+    compile 'com.android.support:support-v4:26.+'
     testCompile 'junit:junit:4.12'
 }
 

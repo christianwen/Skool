@@ -200,6 +200,7 @@ public class AddTaskActivity extends Activity implements TaskDeadlineDialogFragm
                 int bitmapHeight = bitmap.getHeight();
                 int bitmapWidth = bitmap.getWidth();
                 Bitmap displayBitmap=null;
+
                 if(bitmapHeight>bitmapWidth) {
                     Bitmap squareBitmap = Bitmap.createBitmap(bitmap, 0, (bitmapHeight-bitmapWidth)/2,bitmapWidth,bitmapWidth);
                     displayBitmap = Bitmap.createScaledBitmap(squareBitmap, BITMAP_MAX_SIZE, BITMAP_MAX_SIZE, true);
