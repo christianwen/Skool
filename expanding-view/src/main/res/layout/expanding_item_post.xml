@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <EditText
+        android:id="@+id/task_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="Title..."
+        android:inputType="textPersonName"
+        />
+
+    <EditText
+        android:id="@+id/task_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="0dp"
+        android:ems="10"
+        android:gravity="top"
+        android:hint="Content..."
+        android:minLines="3"
+        android:singleLine="false"
+        android:inputType="textMultiLine" />
+
+    <Button
+        android:textColor="#FFFFFF"
+        android:background="#009f9f"
+        android:id="@+id/task_add_button"
+        android:text="Add"
+        style="@style/Widget.AppCompat.Button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+</LinearLayout>

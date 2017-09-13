@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">Ams Connection</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+    <!-- ... -->
+    <string name="facebook_application_id" translatable="false">714439825413454</string>
+    <!-- Facebook Application ID, prefixed by 'fb'.  Enables Chrome Custom tabs. -->
+    <string name="facebook_login_protocol_scheme" translatable="false">fb714439825413454</string>
+
+    <string name="no_internet_connection">No internet connection</string>
+    <string name="unknown_error">Sorry, there is some error. Try again later</string>
+    <string name="task_deadline_submit">Add task</string>
+    <string name="task_deadline_cancel">Cancel</string>
+
+
+</resources>

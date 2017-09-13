@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.tiena.amsconnection.activity.RequestInfoActivity">
+    <LinearLayout
+        android:id="@+id/school_picker_layout"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:textStyle="bold"
+            android:textSize="25sp"
+            android:textAlignment="center"
+            android:text="Where do you study?"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <com.aigestudio.wheelpicker.WheelPicker
+
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            app:wheel_item_text_size="20sp"
+            app:wheel_visible_item_count="7"
+            app:wheel_cyclic="true"
+            app:wheel_atmospheric="true"
+            app:wheel_curved="true"
+            app:wheel_curtain="true"
+
+            android:id="@+id/wheel_picker_school"
+            android:layout_width="match_parent"
+            android:layout_height="200dp" />
+
+        <Button
+            android:id="@+id/button_next_school"
+            android:text="Next"
+            android:layout_gravity="center"
+            style="@style/com_facebook_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/class_picker_layout"
+        android:visibility="gone"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:textStyle="bold"
+            android:textSize="25sp"
+            android:textAlignment="center"
+            android:text="Which class are you in?"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <com.aigestudio.wheelpicker.WheelPicker
+
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            app:wheel_item_text_size="20sp"
+            app:wheel_visible_item_count="7"
+            app:wheel_cyclic="true"
+            app:wheel_atmospheric="true"
+            app:wheel_curved="true"
+            app:wheel_curtain="true"
+
+            android:id="@+id/wheel_picker_class"
+            android:layout_width="match_parent"
+            android:layout_height="200dp" />
+        <Button
+            android:id="@+id/button_next_class"
+            android:text="Next"
+            android:layout_gravity="center"
+            style="@style/com_facebook_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+</LinearLayout>

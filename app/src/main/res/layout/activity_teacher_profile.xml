@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:folding-cell="http://schemas.android.com/tools">
+
+    <com.ramotion.foldingcell.FoldingCell
+        android:layout_margin="10dp"
+        folding-cell:additionalFlipsCount="0"
+        folding-cell:cameraHeight="30"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:background="@drawable/folding_cell_title"
+        android:id="@+id/folding_cell_about"
+        android:clipChildren="false"
+        android:clipToPadding="false"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        ​
+        <LinearLayout
+            android:orientation="vertical"
+            android:id="@+id/cell_content_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageView
+
+                    android:id="@+id/phone_icon"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+
+                    android:layout_marginStart="30dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:src="@drawable/phone_icon" />
+
+                <ImageView
+                    android:id="@+id/imageView3"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_below="@id/phone_icon"
+
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:src="@drawable/email_icon" />
+
+                <TextView
+                    android:id="@+id/teacher_phone"
+                    android:textSize="20sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Phone Number"
+                    android:layout_alignBottom="@+id/phone_icon"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginBottom="9dp"
+                    android:layout_toEndOf="@+id/phone_icon" />
+
+                <TextView
+                    android:id="@+id/teacher_email"
+                    android:textSize="20sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Email"
+                    android:layout_marginLeft="20dp"
+
+                    android:layout_alignBottom="@+id/imageView3"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginBottom="9dp"
+                    android:layout_toEndOf="@+id/imageView3" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:src="@drawable/class_icon"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:id="@+id/imageView" />
+
+                <TextView
+                    android:id="@+id/teacher_classes"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginStart="21dp"
+
+
+                    android:layout_toEndOf="@+id/imageView"
+                    android:text="Classes:  "
+                    android:textSize="20sp" />
+
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_marginTop="20dp"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:weightSum="1">
+                <TextView
+                    android:textSize="20sp"
+                    android:layout_marginLeft="30dp"
+                    android:text="Tell people what you think:"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <io.techery.properratingbar.ProperRatingBar
+                    android:id="@+id/rating_score"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_margin="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_weight="0.22"
+                    app:prb_clickable="true"
+
+                    app:prb_defaultRating="0"
+
+                    app:prb_tickNormalDrawable="@drawable/rating_star_icon_deactive_small"
+                    app:prb_tickSelectedDrawable="@drawable/rating_star_icon_active_small"
+                    app:prb_totalTicks="6" />
+
+                <TextView
+                    android:id="@+id/textView4"
+                    android:layout_marginBottom="10dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="(Choose rating above)" />
+            </LinearLayout>
+
+
+
+
+        </LinearLayout>
+        ​
+        <RelativeLayout
+            android:layout_below="@id/cell_content_view"
+            android:id="@+id/cell_title_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:elevation="5dp"
+                android:layout_margin="10dp"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:id="@+id/teacher_avatar" />
+
+            <TextView
+                android:id="@+id/teacher_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignTop="@+id/teacher_avatar"
+                android:layout_toEndOf="@+id/teacher_avatar"
+                android:textSize="20sp" />
+
+            <TextView
+
+                android:id="@+id/teacher_subject"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:layout_below="@+id/teacher_name"
+                android:layout_toEndOf="@+id/teacher_avatar" />
+            <TextView
+
+                android:id="@+id/tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Tap to know more"
+
+
+                android:layout_alignBottom="@+id/teacher_avatar"
+                android:layout_toEndOf="@+id/teacher_subject" />
+
+
+
+        </RelativeLayout>
+        ​
+    </com.ramotion.foldingcell.FoldingCell>
+
+
+
+    <TextView
+        android:textSize="16sp"
+        android:layout_marginLeft="10dp"
+        android:id="@+id/rating_status"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/folding_cell_about"
+        android:layout_alignParentStart="true" />
+
+
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rating_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_below="@+id/rating_status"
+        android:layout_alignParentStart="true">
+
+    </android.support.v7.widget.RecyclerView>
+
+
+</RelativeLayout>

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <ImageView
+
+        android:layout_margin="10dp"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:id="@+id/user_avatar" />
+
+    <TextView
+        android:id="@+id/rating_comment"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/user_avatar"
+        android:layout_alignParentEnd="true"
+        android:layout_toEndOf="@+id/user_avatar"
+        android:layout_below="@+id/rating_score" />
+
+    <TextView
+        android:id="@+id/user_name"
+        android:layout_width="wrap_content"
+        android:layout_height="20dp"
+        android:layout_marginRight="10dp"
+        android:layout_alignTop="@+id/user_avatar"
+        android:layout_toEndOf="@+id/user_avatar" />
+
+    <io.techery.properratingbar.ProperRatingBar
+        android:id="@+id/rating_score"
+        android:layout_width="wrap_content"
+        android:layout_height="20dp"
+        app:prb_totalTicks="6"
+        app:prb_defaultRating="0"
+        app:prb_tickNormalDrawable="@drawable/rating_star_icon_deactive_extra_small"
+        app:prb_tickSelectedDrawable="@drawable/rating_star_icon_active_extra_small"
+        app:prb_clickable="false"
+
+
+        android:layout_alignTop="@+id/user_name"
+        android:layout_toEndOf="@+id/user_name" />
+</RelativeLayout>

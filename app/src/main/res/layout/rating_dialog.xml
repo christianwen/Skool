@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <io.techery.properratingbar.ProperRatingBar
+        android:id="@+id/rating_score"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_margin="10dp"
+        app:prb_totalTicks="6"
+        app:prb_defaultRating="0"
+        app:prb_tickNormalDrawable="@drawable/rating_star_icon_deactive_small"
+        app:prb_tickSelectedDrawable="@drawable/rating_star_icon_active_small"
+        app:prb_clickable="false"
+
+
+        />
+    <EditText
+        android:id="@+id/rating_comment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="0dp"
+        android:ems="10"
+        android:gravity="top"
+        android:hint="What do you think?"
+        android:minLines="3"
+        android:singleLine="false"
+        android:inputType="textMultiLine" />
+</LinearLayout>

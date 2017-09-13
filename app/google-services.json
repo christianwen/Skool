@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "790225372652",
+    "firebase_url": "https://amsconnection-44622.firebaseio.com",
+    "project_id": "amsconnection-44622",
+    "storage_bucket": "amsconnection-44622.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:790225372652:android:6ec094d2dffb76a9",
+        "android_client_info": {
+          "package_name": "com.example.tiena.amsconnection"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "790225372652-h1jn00atnhk53i3td9h7m7gjehe8kn1a.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.tiena.amsconnection",
+            "certificate_hash": "87c0135851b6070024b1890d36d92a2721762f2b"
+          }
+        },
+        {
+          "client_id": "790225372652-k748dt9gbf9vsoh44n7kaofm3utffuq8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBsL1jn7FfLEeUdpi91wDjugP3AQxprPRU"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "790225372652-k748dt9gbf9vsoh44n7kaofm3utffuq8.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

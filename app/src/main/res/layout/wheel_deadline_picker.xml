@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="10dp"
+    android:weightSum="1">
+    <com.aigestudio.wheelpicker.WheelPicker
+        android:id="@+id/deadline_picker_month"
+
+        app:wheel_atmospheric="true"
+        app:wheel_curtain="true"
+        app:wheel_curved="true"
+        app:wheel_cyclic="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.41" />
+    <com.aigestudio.wheelpicker.widgets.WheelDayPicker
+        android:id="@+id/deadline_picker_day"
+
+        app:wheel_atmospheric="true"
+        app:wheel_curtain="true"
+        app:wheel_curved="true"
+        app:wheel_cyclic="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.42" />
+    <com.aigestudio.wheelpicker.WheelPicker
+        android:id="@+id/deadline_picker_lesson"
+        app:wheel_data="@array/WheelArrayLesson"
+        app:wheel_atmospheric="true"
+        app:wheel_curtain="true"
+        app:wheel_curved="true"
+        app:wheel_cyclic="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.17" />
+</LinearLayout>
