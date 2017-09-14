@@ -136,11 +136,11 @@ public class AddTaskActivity extends Activity implements TaskDeadlineDialogFragm
                 String user_id = user.getUid();
                 String class_id = CLASS_ID;
                 String deadline = AddTaskActivity.this.deadline;
-                String title="";
+
                 final DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference("tasks");
                 final String key=dbRef.push().getKey();
-                dbRef.child(key).setValue(new Task(user_id,class_id,title,content,deadline,System.currentTimeMillis()));
-                dbRef.child(key+"/photos_count").setValue(bitmaps.size());
+                dbRef.child(key+"/basics").setValue(new Task(user_id,class_id,content,deadline,System.currentTimeMillis()));
+                //dbRef.child(key+"/photos_count").setValue(bitmaps.size());
 
                 if(bitmaps!=null) {
                     StorageReference storageRef = FirebaseStorage.getInstance().getReference("tasks/" + key);
@@ -164,7 +164,7 @@ public class AddTaskActivity extends Activity implements TaskDeadlineDialogFragm
                             @Override
                             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                                 Uri downloadUrl = taskSnapshot.getDownloadUrl();
-                                dbRef.child(key+"/photo_urls").push().setValue(downloadUrl.toString());
+                                dbRef.child(key+"/details/photo_urls").push().setValue(downloadUrl.toString());
                                 Log.d("photo_url",downloadUrl.toString());
                                 if(finalCount ==bitmaps.size()){
                                     Toast.makeText(AddTaskActivity.this, "Add task successfully", Toast.LENGTH_SHORT).show();

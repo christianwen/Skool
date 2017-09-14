@@ -17,6 +17,7 @@
 
     <TextView
         android:id="@+id/user_name"
+        android:textStyle="bold"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="18dp"
@@ -72,39 +73,44 @@
         app:layout_constraintTop_toBottomOf="@+id/confirm_count">
 
         <Button
-
+            android:layout_weight="1"
             android:id="@+id/confirm_button"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_gravity="center_vertical"
             android:background="?android:attr/selectableItemBackground"
-            android:drawableStart="@drawable/ic_confirm_inactive"
+            android:drawableStart="@drawable/ic_confirm"
+            android:drawablePadding="0dp"
             android:text="Confirm"
             android:textAllCaps="false"
-            android:layout_marginRight="10dp"
+
             android:textColor="#9e9e9e" />
 
         <Button
-            android:layout_marginRight="10dp"
+            android:layout_weight="1"
+
+
             android:id="@+id/comment_button"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_gravity="center_vertical"
             android:background="?android:attr/selectableItemBackground"
-            android:drawableStart="@drawable/ic_comment_inactive"
+            android:drawableStart="@drawable/ic_comment"
             android:text="Comment"
 
             android:textAllCaps="false"
             android:textColor="#9e9e9e" />
 
         <Button
+            android:layout_weight="1"
+
             android:id="@+id/remind_button"
 
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_gravity="center_vertical"
             android:background="?android:attr/selectableItemBackground"
-            android:drawableStart="@drawable/ic_remind_inactive"
+            android:drawableStart="@drawable/ic_remind"
             android:paddingRight="10dp"
             android:text="Remind me"
             android:textAllCaps="false"
@@ -116,13 +122,10 @@
         android:id="@+id/confirm_count"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="8dp"
-        android:layout_marginStart="8dp"
+
+        android:layout_marginStart="17dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/photo_container_2" />
-
-
-
 
 
     <TextView

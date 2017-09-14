@@ -55,12 +55,14 @@
         android:layout_height="48dp"
         android:layout_marginLeft="8dp"
         android:layout_marginTop="8dp"
-        android:drawableLeft="@drawable/ic_add_a_photo"
+        android:drawableLeft="@drawable/ic_layer_image"
+        android:drawableTint="#4caf50"
+        android:drawablePadding="10dp"
         android:gravity="center_vertical"
         android:text="Attach photo"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/task_content"
-        android:layout_marginStart="8dp" />
+        android:layout_marginStart="20dp" />
 
     <Button
         android:id="@+id/set_deadline_button"

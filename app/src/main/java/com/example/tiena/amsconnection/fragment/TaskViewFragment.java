@@ -3,6 +3,7 @@ package com.example.tiena.amsconnection.fragment;
 import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -21,6 +22,7 @@ import com.example.tiena.amsconnection.activity.ViewTaskActivity;
 import com.example.tiena.amsconnection.helperclass.AnythingHelper;
 import com.example.tiena.amsconnection.helperclass.CircleTransform;
 import com.example.tiena.amsconnection.helperclass.SquareTransform;
+import com.example.tiena.amsconnection.item.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -29,6 +31,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -45,7 +50,6 @@ public class TaskViewFragment extends Fragment implements View.OnClickListener{
     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
     View layout;
 
-    int[] icons = {R.drawable.ic_confirm_active,R.drawable.ic_confirm_inactive,R.drawable.ic_comment_active,R.drawable.ic_comment_inactive};
     int[] colors = {R.color.ConfirmActive,R.color.ActionInactive,R.color.CommentActive,R.color.ActionInactive};
     // TODO: Rename and change types of parameters
    private String TASK_ID;
@@ -147,11 +151,12 @@ public class TaskViewFragment extends Fragment implements View.OnClickListener{
                 confirmed=!confirmed;
                 toggleConfirm(confirmed);
                 String user_id = user.getUid();
+
                 if(confirmed){
-                    dbRef.child("tasks/"+TASK_ID+"/confirmations/"+user_id).setValue(true);
+                    dbRef.child("tasks/"+TASK_ID+"/details/confirmations/"+user_id).setValue(true);
                 }
                 else{
-                    dbRef.child("tasks/"+TASK_ID+"/confirmations/"+user_id).setValue(null);
+                    dbRef.child("tasks/"+TASK_ID+"/details/confirmations/"+user_id).setValue(null);
                 }
 
             }
@@ -161,10 +166,10 @@ public class TaskViewFragment extends Fragment implements View.OnClickListener{
     void toggleConfirm(boolean confirmed){
         final Button confirmBtn = layout.findViewById(R.id.confirm_button);
 
-        int command = confirmed?0:1;
-        confirmBtn.setTextColor(getResources().getColor(colors[command]));
-        Drawable icon = getResources().getDrawable( icons[command] );
-        confirmBtn.setCompoundDrawablesWithIntrinsicBounds(icon, null, null, null);
+        int ref = confirmed ? R.color.ConfirmActive : R.color.ActionInactive;
+        confirmBtn.getCompoundDrawables()[0].setColorFilter(getResources().getColor(ref), PorterDuff.Mode.SRC_ATOP);
+        confirmBtn.setTextColor(getResources().getColor(ref));
+
     }
 
 
@@ -187,7 +192,7 @@ public class TaskViewFragment extends Fragment implements View.OnClickListener{
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 ImageView imageView = layout.findViewById(R.id.user_avatar);
-                Picasso.with(getActivity()).load(dataSnapshot.getValue(String.class)).transform(new CircleTransform()).into(imageView);
+                Picasso.with(getActivity()).load(dataSnapshot.getValue(String.class)).fit().transform(new CircleTransform()).into(imageView);
             }
 
             @Override
@@ -199,64 +204,79 @@ public class TaskViewFragment extends Fragment implements View.OnClickListener{
 
     void setTaskLayout(){
         layout.findViewById(R.id.comment_button).setOnClickListener(this);
-        dbRef.child("tasks/"+TASK_ID).addListenerForSingleValueEvent(new ValueEventListener() {
+        dbRef.child("tasks/"+TASK_ID+"/details/confirmations/"+user.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                confirmed = dataSnapshot.getValue()!=null;
+                toggleConfirm(confirmed);
+            }
 
-                String publisher_id = dataSnapshot.child("user_id").getValue(String.class);
-                setTaskPublisherInfo(publisher_id);
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
 
-                Long time_created = dataSnapshot.child("time_created").getValue(Long.class);
+            }
+        });
+
+        dbRef.child("tasks/"+TASK_ID+"/basics").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Task task = dataSnapshot.getValue(Task.class);
+                setTaskPublisherInfo(task.user_id);
+                Long time_created = task.time_created;
                 if(time_created!=null){
                     String time = AnythingHelper.convertTimestampToDate(time_created);
                     ((TextView) layout.findViewById(R.id.task_time_created)).setText(time);
                 }
-
                 if(dataSnapshot.child("confirmations/"+user.getUid()).getValue()!=null){
                     confirmed=true;
                     toggleConfirm(true);
                 }
-
                 ((TextView) layout.findViewById(R.id.task_content)).setText(dataSnapshot.child("content").getValue(String.class));
 
+            }
 
-                DataSnapshot photoUrls = dataSnapshot.child("photo_urls");
-                if(photoUrls!=null) {
-                    int photos_count=dataSnapshot.child("photos_count").getValue(int.class);
-                    boolean hasManyPhotos = !(photos_count==1);
-                    int count=0;
-                    for (DataSnapshot photoUrl : photoUrls.getChildren()) {
-                        count++;
-                        if(count==5)return;
-                        String url = photoUrl.getValue(String.class);
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+        dbRef.child("tasks/"+TASK_ID+"/details/photo_urls").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if(dataSnapshot!=null) {
+                    List<String> urls = new ArrayList<>();
+                    for (DataSnapshot photoUrl : dataSnapshot.getChildren()) {
+                        urls.add(photoUrl.getValue(String.class));
+                    }
+
+                    if(urls.size()==1){
                         ImageView imageView = new ImageView(getActivity());
-                        LinearLayout.LayoutParams params;
-                        if(hasManyPhotos){
-                            params = new LinearLayout.LayoutParams(512, 512);
-                            params.setMargins(10,10,10,10);
-                            imageView.setLayoutParams(params);
-                            if(photos_count>4&&count==4){
-                                Picasso.with(getActivity()).load(url).transform(new SquareTransform(photos_count-4)).into(imageView);
-                            }
-                            else{
-                                Picasso.with(getActivity()).load(url).transform(new SquareTransform()).into(imageView);
+                        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                        imageView.setLayoutParams(params);
+                        Picasso.with(getActivity()).load(urls.get(0)).placeholder(R.drawable.placeholder_image).fit().into(imageView);
+                    }
+                    else {
 
-                            }
-                        }
-                        else {
-                            params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                        int max_image_num = urls.size() < 4 ? urls.size() : 4;
+                        for (int i = 0; i < max_image_num; i++) {
+                            ImageView imageView = new ImageView(getActivity());
+                            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(512, 512);
+                            params.setMargins(10, 10, 10, 10);
                             imageView.setLayoutParams(params);
-                            Picasso.with(getActivity()).load(url).into(imageView);
-                        }
-                        if(count<3) {
-                            photoContainer.addView(imageView);
-                        }else{
-                            photoContainer2.addView(imageView);
+
+                            SquareTransform squareTransform = i==max_image_num-1 ? new SquareTransform(urls.size() - 4) : new SquareTransform();
+                            Picasso.with(getActivity()).load(urls.get(i)).placeholder(R.drawable.placeholder_image).transform(squareTransform).into(imageView);
+
+                            if (i < 2) {
+                                photoContainer.addView(imageView);
+                            } else {
+                                photoContainer2.addView(imageView);
+                            }
                         }
                     }
 
                 }
-
             }
 
             @Override
@@ -267,7 +287,7 @@ public class TaskViewFragment extends Fragment implements View.OnClickListener{
     }
 
     void setStatistics(){
-        dbRef.child("tasks/"+TASK_ID+"/confirmations_count").addValueEventListener(new ValueEventListener() {
+        dbRef.child("tasks/"+TASK_ID+"/statistics/confirmations_count").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Long confirmations_count = dataSnapshot.getValue(Long.class);
@@ -287,7 +307,7 @@ public class TaskViewFragment extends Fragment implements View.OnClickListener{
             }
         });
 
-        dbRef.child("tasks/"+TASK_ID+"/comments_count").addValueEventListener(new ValueEventListener() {
+        dbRef.child("tasks/"+TASK_ID+"/statistics/comments_count").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Long comments_count = dataSnapshot.getValue(Long.class);

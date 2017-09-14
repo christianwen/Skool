@@ -62,7 +62,7 @@ public class CommentHolder extends RecyclerView.ViewHolder {
                 ref.child("students/"+comment.user_id+"/photo_url").addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
-                        Picasso.with(itemView.getContext()).load(dataSnapshot.getValue(String.class)).transform(new CircleTransform()).into(mUserAvatar);
+                        Picasso.with(itemView.getContext()).load(dataSnapshot.getValue(String.class)).placeholder(R.drawable.placeholder_image).fit().transform(new CircleTransform()).into(mUserAvatar);
                     }
 
                     @Override

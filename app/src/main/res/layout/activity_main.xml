@@ -45,16 +45,31 @@
 
     </FrameLayout>
 
-    <android.support.design.widget.BottomNavigationView
+    <com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx
         android:id="@+id/navigation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
 
         android:layout_alignParentBottom="true"
         android:background="?android:attr/windowBackground"
+
         app:itemIconTint="@drawable/nav_icon_color_state"
         app:itemTextColor="@drawable/nav_icon_color_state"
-        app:menu="@menu/navigation" />
+        app:menu="@menu/navigation">
+
+    </com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx>
+
+    <!--<android.support.design.widget.BottomNavigationView
+        android:id="@+id/navigation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:layout_alignParentBottom="true"
+        android:background="?android:attr/windowBackground"
+
+        app:itemIconTint="@drawable/nav_icon_color_state"
+        app:itemTextColor="@drawable/nav_icon_color_state"
+        app:menu="@menu/navigation" />-->
 
     <com.github.clans.fab.FloatingActionButton
         android:id="@+id/fab"

@@ -91,7 +91,7 @@ public class ViewTaskActivity extends Activity implements View.OnClickListener,T
     }
 
     void setComments(){
-        DatabaseReference ref = dbRef.child("tasks/"+KEY+"/comments");
+        DatabaseReference ref = dbRef.child("tasks/"+KEY+"/details/comments");
         mAdapter = new FirebaseRecyclerAdapter<Boolean,CommentHolder>(
                 Boolean.class,
                 R.layout.comment,
@@ -137,7 +137,7 @@ public class ViewTaskActivity extends Activity implements View.OnClickListener,T
     @Override
     public void onCommentButtonClicked() {
         Log.d("action","click on comment button");
-        findViewById(R.id.comment_edit_text).performClick();
+        ((EditText)findViewById(R.id.comment_edit_text)).performClick();
 
     }
 }

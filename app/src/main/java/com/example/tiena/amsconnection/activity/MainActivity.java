@@ -15,7 +15,8 @@ import android.view.View;
 import android.view.Window;
 import android.widget.ImageView;
 
-import com.example.tiena.amsconnection.fragment.DashboardFragment;
+import com.example.tiena.amsconnection.fragment.ChatFragment;
+import com.example.tiena.amsconnection.fragment.MoreFragment;
 import com.example.tiena.amsconnection.fragment.NotiFragment;
 import com.example.tiena.amsconnection.R;
 import com.example.tiena.amsconnection.fragment.SearchFragment;
@@ -30,19 +31,21 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class MainActivity extends FragmentActivity {
+public class MainActivity extends FragmentActivity implements ChatFragment.OnFragmentInteractionListener, MoreFragment.OnFragmentInteractionListener {
     private RecyclerView notiList;
     private FirebaseDatabase mDatabase;
     private DatabaseReference mDb;
     private SearchFragment searchFragment=new SearchFragment();
     private NotiFragment notiFragment=new NotiFragment();
     private HomeFragment homeFragment=new HomeFragment();
-    private DashboardFragment dashFragment=new DashboardFragment();
+    private MoreFragment moreFragment = new MoreFragment();
+
 
     FragmentTransaction ft=getFragmentManager().beginTransaction();
     private ImageView searchBtn;
@@ -50,6 +53,7 @@ public class MainActivity extends FragmentActivity {
     private Map<String,String> userInfo=new HashMap<String,String>();
     private FirebaseRecyclerAdapter mAdapter=null;
     private String CLASS_ID;
+    private ChatFragment chatFragment = new ChatFragment();
     View homeBtn;
 
 
@@ -61,32 +65,41 @@ public class MainActivity extends FragmentActivity {
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 
             switch (item.getItemId()) {
+                case R.id.navigation_chat:
+                    getFragmentManager().beginTransaction()
+                            .hide(notiFragment)
+                            .hide(homeFragment)
+                            .hide(moreFragment)
+                            .show(chatFragment)
+                            .commit();
+                    return true;
                 case R.id.navigation_home:
-                    ft=getFragmentManager().beginTransaction();
-                    //ft.add(R.id.content,homeFragment);
-                    ft.hide(notiFragment);
-                    ft.hide(dashFragment);
-                    ft.show(homeFragment);
-
-                    ft.commit();
+                    getFragmentManager().beginTransaction()
+                            .hide(notiFragment)
+                            .hide(chatFragment)
+                            .hide(moreFragment)
+                            .show(homeFragment)
+                            .commit();
                     return true;
-                case R.id.navigation_dashboard:
-                    ft=getFragmentManager().beginTransaction();
 
-                    ft.hide(notiFragment);
-                    ft.hide(homeFragment);
-                    ft.show(dashFragment);
-
-                    ft.commit();
-                    return true;
                 case R.id.navigation_notifications:
-                    ft=getFragmentManager().beginTransaction();
-
-                    ft.hide(dashFragment);
-                    ft.hide(homeFragment);
-                    ft.show(notiFragment);
-                    ft.commit();
+                    getFragmentManager().beginTransaction()
+                            .hide(chatFragment)
+                            .hide(homeFragment)
+                            .hide(moreFragment)
+                            .show(notiFragment)
+                            .commit();
                     return true;
+                case R.id.navigation_more:
+                    getFragmentManager().beginTransaction()
+                            .hide(chatFragment)
+                            .hide(homeFragment)
+                            .hide(notiFragment)
+                            .show(moreFragment)
+                            .commit();
+                    return true;
+
+
             }
 
             return false;
@@ -100,11 +113,12 @@ public class MainActivity extends FragmentActivity {
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         //startActivity(new Intent(this,RequestInfoActivity.class));
         setContentView(R.layout.activity_main);
-        ft.add(R.id.content,homeFragment).add(R.id.content,dashFragment).add(R.id.content,notiFragment).commit();
 
+        BottomNavigationViewEx navigation =findViewById(R.id.navigation);
+        navigation.enableItemShiftingMode(false);
+        navigation.setTextVisibility(false);
+        navigation.enableShiftingMode(false);
 
-
-        BottomNavigationView navigation =findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
         if(getIntent()!=null&&getIntent().getExtras()!=null){
@@ -124,12 +138,17 @@ public class MainActivity extends FragmentActivity {
         }
 
 
+        chatFragment = ChatFragment.newInstance("class_id",CLASS_ID);
+        moreFragment = MoreFragment.newInstance("class_id",CLASS_ID);
 
+
+        ft.add(R.id.content,homeFragment).add(R.id.content,chatFragment).add(R.id.content,notiFragment).add(R.id.content,moreFragment).commit();
         Bundle args=new Bundle();
+
         args.putString("class_id",CLASS_ID);
         homeFragment.setArguments(args);
         notiFragment.setArguments(args);
-        dashFragment.setArguments(args);
+
 
         searchBtn=findViewById(R.id.searchBtn);
         mDatabase=FirebaseDatabase.getInstance();
@@ -209,4 +228,11 @@ public class MainActivity extends FragmentActivity {
     public void onBackPressed() {
         homeBtn.performClick();
     }
+
+    @Override
+    public void onFragmentInteraction(Uri uri) {
+
+    }
+
+
 }

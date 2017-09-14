@@ -10,6 +10,8 @@ import android.widget.TextView;
 import com.example.tiena.amsconnection.R;
 import com.example.tiena.amsconnection.activity.ViewTaskActivity;
 import com.example.tiena.amsconnection.item.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -31,7 +33,8 @@ public class NotiHolder extends RecyclerView.ViewHolder implements View.OnClickL
     private TextView mNotiContent,mNotiDeadline;
     private ImageView mNotiPhoto;
     private String key;
-
+    private FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+    private DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference();
 
     public NotiHolder(View itemView){
         super(itemView);
@@ -44,11 +47,27 @@ public class NotiHolder extends RecyclerView.ViewHolder implements View.OnClickL
 
     public void init(String key){
         this.key = key;
-        final DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference();
-        dbRef.child("tasks/"+key).addListenerForSingleValueEvent(new ValueEventListener() {
+
+        dbRef.child("tasks/"+key+"/details/reads/"+user.getUid()).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if(dataSnapshot.getValue()==null){
+                    itemView.setBackgroundColor(itemView.getContext().getResources().getColor(R.color.SpringGreen));
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+        dbRef.child("tasks/"+key+"/basics").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Task task = dataSnapshot.getValue(Task.class);
+                //boolean isRead = dataSnapshot.child("reads/"+user.getUid()).getValue(boolean.class);
+
                 final String content = task.content;
                 //mNotiContent.setText(task.content);
                 if(!task.deadline.equals("")){
@@ -59,7 +78,7 @@ public class NotiHolder extends RecyclerView.ViewHolder implements View.OnClickL
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
                                 //Toast.makeText(getActivity(), dataSnapshot.getValue().toString(), Toast.LENGTH_SHORT).show();
-                                Picasso.with(itemView.getContext()).load(dataSnapshot.getValue(String.class)).transform(new CircleTransform()).into(mNotiPhoto);
+                                Picasso.with(itemView.getContext()).load(dataSnapshot.getValue(String.class)).placeholder(R.drawable.placeholder_image).fit().transform(new CircleTransform()).into(mNotiPhoto);
                             }
 
                             @Override
@@ -114,6 +133,10 @@ public class NotiHolder extends RecyclerView.ViewHolder implements View.OnClickL
     public void onClick(View view) {
         Intent intent = new Intent(itemView.getContext(), ViewTaskActivity.class);
         intent.putExtra("key",key);
+
+        if(user!=null) {
+            dbRef.child("tasks/"+key+"/details/reads/"+user.getUid()).setValue(true);
+        }
         itemView.getContext().startActivity(intent);
     }
 

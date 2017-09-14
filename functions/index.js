@@ -14,15 +14,15 @@ var functions = require('firebase-functions');
 const admin = require('firebase-admin');
 admin.initializeApp(functions.config().firebase);
 
-exports.deleteTask=functions.database.ref("tasks/{task_id}").onDelete(event=>{
+exports.deleteTask=functions.database.ref("tasks/{task_id}/basics/class_id").onDelete(event=>{
     var task_id=event.params.task_id;
+    var class_id = event.data.previous.val();
     console.log("task deleted in "+task_id);
-    let prev_class_id=event.data.previous.val().class_id;
-       
-    return admin.database().ref('classes/'+prev_class_id+'/tasks/'+task_id).set(null);
+
+    return admin.database().ref('classes/'+class_id+'/tasks/'+task_id).set(null);
 });
 
-exports.pushTask=functions.database.ref("tasks/{task_id}").onCreate(event =>{
+exports.pushTask=functions.database.ref("tasks/{task_id}/basics").onCreate(event =>{
     var task_id=event.params.task_id;
     var data=event.data.val();
     console.log("data",data);
@@ -31,14 +31,14 @@ exports.pushTask=functions.database.ref("tasks/{task_id}").onCreate(event =>{
     
     console.log("class id",class_id);
     var promise1 = admin.database().ref('classes/'+class_id+'/tasks/'+task_id).set(true);
-    title=data.title;
+
     content=data.content;
     var promise2 = loadStudents(class_id).then(tokens => {
             console.log('tokens: ',tokens);
 
             var payload = {
                 notification: {
-                    title: title,
+                    title: content,
                     body: content,
                     sound: 'default',
                     badge: '1'
@@ -84,16 +84,16 @@ function loadStudents(class_id) {
     });
 }
 
-exports.deleteStudent = functions.database.ref("students/{student_id}").onDelete(event=>{
+exports.deleteStudent = functions.database.ref("students/{student_id}/class_id").onDelete(event=>{
     var student_id = event.params.student_id;
-    var data=event.data.previous.val();
-    return admin.database().ref("classes/"+data.class_id+"/students/"+student_id).set(null);
+    var class_id=event.data.previous.val();
+    return admin.database().ref("classes/"+class_id+"/students/"+student_id).set(null);
 });
 
-exports.pushStudent = functions.database.ref("students/{student_id}").onCreate(event=>{
+exports.pushStudent = functions.database.ref("students/{student_id}/class_id").onCreate(event=>{
     var student_id = event.params.student_id;  
-    var data = event.data.val();          
-    var class_id = data.class_id;
+
+    var class_id = event.data.val();
     console.log(class_id,student_id);       
     return admin.database().ref("classes/"+class_id+"/students/"+student_id).set(true);        
 });
@@ -137,10 +137,10 @@ exports.pushRating = functions.database.ref("ratings/{rating_id}").onCreate(even
    
 });
 
-exports.deleteConfirmation = functions.database.ref("tasks/{task_id}/confirmations/{user_id}").onDelete(event=>{
+exports.deleteConfirmation = functions.database.ref("tasks/{task_id}/details/confirmations/{user_id}").onDelete(event=>{
     var task_id = event.params.task_id;
     var user_id = event.params.user_id;
-    var ref=admin.database().ref("tasks/"+task_id+"/confirmations_count");
+    var ref=admin.database().ref("tasks/"+task_id+"/statistics/confirmations_count");
     
     var promise1 = admin.database().ref("students/"+user_id+"/confirmations/"+task_id).set(null);
        
@@ -153,11 +153,11 @@ exports.deleteConfirmation = functions.database.ref("tasks/{task_id}/confirmatio
     return Promise.all([promise1,promise2]);
 });
 
-exports.pushConfirmation = functions.database.ref("tasks/{task_id}/confirmations/{user_id}").onCreate(event=>{
+exports.pushConfirmation = functions.database.ref("tasks/{task_id}/details/confirmations/{user_id}").onCreate(event=>{
  
     var task_id = event.params.task_id;
     var user_id = event.params.user_id;
-    var ref=admin.database().ref("tasks/"+task_id+"/confirmations_count");           
+    var ref=admin.database().ref("tasks/"+task_id+"/statistics/confirmations_count");
     var promise1 = admin.database().ref("students/"+user_id+"/confirmations/"+task_id).set(true);
 
     var promise2 = ref.once('value').then(result=>{
@@ -175,12 +175,12 @@ exports.pushConfirmation = functions.database.ref("tasks/{task_id}/confirmations
     return Promise.all([promise1,promise2]);
 });
 
-exports.pushComment = functions.database.ref("comments/{comment_id}").onCreate(event=>{
+exports.pushComment = functions.database.ref("comments/{comment_id}/task_id").onCreate(event=>{
     var comment_id = event.params.comment_id;
-    var data = event.data.val();
-    var task_id = data.task_id;
-    var ref =  admin.database().ref("tasks/"+task_id+"/comments_count");
-    var promise1 = admin.database().ref("tasks/"+task_id+"/comments/"+comment_id).set(true);
+
+    var task_id = event.data.val();
+    var ref =  admin.database().ref("tasks/"+task_id+"/statistics/comments_count");
+    var promise1 = admin.database().ref("tasks/"+task_id+"/details/comments/"+comment_id).set(true);
     var promise2 = ref.once('value').then(result=>{
         var val = result.val() === null ? 1 : result.val() + 1;
         return ref.set(val);
@@ -189,13 +189,13 @@ exports.pushComment = functions.database.ref("comments/{comment_id}").onCreate(e
     return Promise.all([promise1,promise2]);
 });
 
-exports.deleteComment = functions.database.ref("comments/{comment_id}").onDelete(event=>{
+exports.deleteComment = functions.database.ref("comments/{comment_id}/task_id").onDelete(event=>{
     var comment_id = event.params.comment_id;
-    var data = event.data.previous.val();
-    var task_id = data.task_id;
+
+    var task_id = event.data.previous.val();
     
-    var ref =  admin.database().ref("tasks/"+task_id+"/comments_count");
-    var promise1 = admin.database().ref("tasks/"+task_id+"/comments/"+comment_id).set(null);
+    var ref =  admin.database().ref("tasks/"+task_id+"/statistics/comments_count");
+    var promise1 = admin.database().ref("tasks/"+task_id+"/details/comments/"+comment_id).set(null);
     var promise2 = ref.once('value').then(result=>{
         var val = result.val() === null ? 0 : result.val() - 1;
         return ref.set(val);

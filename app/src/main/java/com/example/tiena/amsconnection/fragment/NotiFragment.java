@@ -107,7 +107,10 @@ public class NotiFragment extends Fragment {
                 holder.init(key);
             }
         };
-
+        notiList.setHasFixedSize(true);
+        notiList.setItemViewCacheSize(30);
+        notiList.setDrawingCacheEnabled(true);
+        notiList.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
         notiList.setAdapter(mAdapter);
     }
 
