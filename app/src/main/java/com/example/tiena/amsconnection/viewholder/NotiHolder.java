@@ -132,7 +132,7 @@ public class NotiHolder extends RecyclerView.ViewHolder implements View.OnClickL
     @Override
     public void onClick(View view) {
         Intent intent = new Intent(itemView.getContext(), ViewTaskActivity.class);
-        intent.putExtra("key",key);
+        intent.putExtra("task_id",key);
 
         if(user!=null) {
             dbRef.child("tasks/"+key+"/details/reads/"+user.getUid()).setValue(true);

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <ImageView
+        android:layout_margin="15dp"
+        android:layout_width="72dp"
+        android:layout_height="72dp"
+        android:id="@+id/user_avatar" />
+
+    <TextView
+        android:id="@+id/user_name"
+        android:textStyle="bold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:text="TextView"
+        android:layout_marginStart="14dp"
+        android:layout_alignTop="@+id/user_avatar"
+        android:layout_toEndOf="@+id/user_avatar" />
+    <ImageView
+        android:background="@drawable/ic_rating_star_active"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/rating_star"
+        android:layout_below="@+id/user_name"
+        android:layout_toEndOf="@+id/teacher_subject"
+        android:layout_marginStart="20dp" />
+
+    <TextView
+        android:id="@+id/rating_score"
+        android:layout_width="wrap_content"
+        android:layout_height="24dp"
+        android:gravity="center_vertical"
+        android:text="TextView"
+        android:layout_alignTop="@+id/rating_star"
+        android:layout_toEndOf="@+id/rating_star" />
+
+    <TextView
+        android:gravity="center_vertical"
+
+        android:id="@+id/teacher_subject"
+        android:layout_width="wrap_content"
+        android:layout_height="24dp"
+        android:text="TextView"
+        android:layout_below="@+id/user_name"
+        android:layout_alignStart="@+id/user_name" />
+
+</RelativeLayout>

@@ -83,7 +83,8 @@
         <activity android:name=".activity.TimetableActivity" />
         <activity android:name=".activity.AddTaskActivity" />
         <activity android:name=".activity.ViewTaskActivity" />
-        <activity android:name=".activity.CheckConfirmationsActivity"></activity>
+        <activity android:name=".activity.CheckConfirmationsActivity" />
+        <activity android:name=".activity.TeacherListActivity"></activity>
     </application>
 
 </manifest>

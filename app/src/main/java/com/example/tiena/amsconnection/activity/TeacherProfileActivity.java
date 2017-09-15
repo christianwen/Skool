@@ -193,7 +193,6 @@ public class TeacherProfileActivity extends Activity {
             }
         };
 
-        ratingList.setHasFixedSize(true);
         ratingList.setItemViewCacheSize(30);
         ratingList.setDrawingCacheEnabled(true);
         ratingList.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);

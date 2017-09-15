@@ -20,6 +20,7 @@ import com.example.tiena.amsconnection.fragment.MoreFragment;
 import com.example.tiena.amsconnection.fragment.NotiFragment;
 import com.example.tiena.amsconnection.R;
 import com.example.tiena.amsconnection.fragment.SearchFragment;
+import com.example.tiena.amsconnection.fragment.TaskViewFragment;
 import com.example.tiena.amsconnection.item.User;
 import com.example.tiena.amsconnection.fragment.HomeFragment;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
@@ -37,7 +38,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class MainActivity extends FragmentActivity implements ChatFragment.OnFragmentInteractionListener, MoreFragment.OnFragmentInteractionListener {
+public class MainActivity extends FragmentActivity implements ChatFragment.OnFragmentInteractionListener, MoreFragment.OnFragmentInteractionListener,TaskViewFragment.OnFragmentInteractionListener{
     private RecyclerView notiList;
     private FirebaseDatabase mDatabase;
     private DatabaseReference mDb;
@@ -129,7 +130,7 @@ public class MainActivity extends FragmentActivity implements ChatFragment.OnFra
         }
 
         chatFragment = ChatFragment.newInstance("class_id",CLASS_ID);
-        moreFragment = MoreFragment.newInstance("class_id",CLASS_ID);
+        moreFragment = MoreFragment.newInstance(CLASS_ID);
         ft.add(R.id.content,homeFragment).add(R.id.content,chatFragment).add(R.id.content,notiFragment).add(R.id.content,moreFragment).commit();
 
         if(getIntent()!=null&&getIntent().getExtras()!=null){
@@ -242,5 +243,11 @@ public class MainActivity extends FragmentActivity implements ChatFragment.OnFra
 
     }
 
+    @Override
+    public void onCommentButtonClicked(String task_id) {
+        Intent intent = new Intent(this, ViewTaskActivity.class);
+        intent.putExtra("task_id",task_id);
+        startActivity(intent);
+    }
 
 }

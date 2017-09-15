@@ -59,7 +59,7 @@ public class ViewTaskActivity extends Activity implements View.OnClickListener,T
         photoContainer2 = findViewById(R.id.photo_container_2);
         commentsRecycler = findViewById(R.id.comments_recycler);
         commentsRecycler.setLayoutManager(new LinearLayoutManager(this));
-        KEY = getIntent().getExtras().getString("key",null);
+        KEY = getIntent().getExtras().getString("task_id",null);
         getFragmentManager().beginTransaction().add(R.id.fragment_container, TaskViewFragment.newInstance(KEY)).commit();
         setCommentEdt();
         setComments();
@@ -135,7 +135,7 @@ public class ViewTaskActivity extends Activity implements View.OnClickListener,T
     }
 
     @Override
-    public void onCommentButtonClicked() {
+    public void onCommentButtonClicked(String task_id) {
         Log.d("action","click on comment button");
         EditText commentEdt = findViewById(R.id.comment_edit_text);
         commentEdt.requestFocus();

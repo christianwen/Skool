@@ -138,7 +138,7 @@ public class TaskViewFragment extends Fragment implements View.OnClickListener{
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
-        void onCommentButtonClicked();
+        void onCommentButtonClicked(String task_id);
     }
 
     boolean confirmed = false;
@@ -338,7 +338,7 @@ public class TaskViewFragment extends Fragment implements View.OnClickListener{
         }
 
         if(view.getId()==R.id.comment_button){
-            mListener.onCommentButtonClicked();
+            mListener.onCommentButtonClicked(TASK_ID);
         }
     }
 }

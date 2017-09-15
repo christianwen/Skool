@@ -169,7 +169,7 @@ public class AddTaskActivity extends Activity implements TaskDeadlineDialogFragm
                                 if(finalCount ==bitmaps.size()){
                                     Toast.makeText(AddTaskActivity.this, "Add task successfully", Toast.LENGTH_SHORT).show();
                                     Intent intent = new Intent(AddTaskActivity.this,ViewTaskActivity.class);
-                                    intent.putExtra("key",key);
+                                    intent.putExtra("task_id",key);
                                     startActivity(intent);
                                 }
                             }

@@ -52,6 +52,7 @@ dependencies {
         }
     }
 
+    //compile 'cn.aigestudio.wheelpicker:WheelPicker:1.1.2'
     compile 'com.android.support:multidex:1.0.1'
     compile 'com.android.support:appcompat-v7:26.0.1'
     compile 'com.android.support:design:26.0.1'
@@ -63,7 +64,6 @@ dependencies {
     compile 'com.firebaseui:firebase-ui:2.3.0'
     compile 'com.facebook.android:facebook-android-sdk:4.22.1'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
-    //compile 'cn.aigestudio.wheelpicker:WheelPicker:1.1.2'
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'com.github.techery:properratingbar:0.0.5'
     compile 'com.ramotion.foldingcell:folding-cell:1.2.1'
