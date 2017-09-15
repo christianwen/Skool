@@ -57,7 +57,7 @@ public  class HomeFragment extends Fragment{
 
     ExpandingList expandingList;
     String class_id,user_id;
-    ExpandingItem item_timetable,item_settings,item_teachers;
+    ExpandingItem item_timetable,item_teachers;
 
 
 
@@ -90,7 +90,7 @@ public  class HomeFragment extends Fragment{
 
         setTeachersView();
 
-        setSettingsView();
+
 
         return homeFragmentLayout;
 
@@ -164,37 +164,6 @@ public  class HomeFragment extends Fragment{
         });
     }
 
-    void setSettingsView(){
-        item_settings = expandingList.createNewItem(R.layout.expanding_layout);
-        item_settings.setIndicatorColorRes(R.color.SettingsColor);
-        item_settings.setIndicatorIconRes(R.drawable.setting_icon);
-        ((TextView)item_settings.findViewById(R.id.title)).setText("Settings");
-        int[] layout_id={com.diegodobelo.expandingview.R.layout.expanding_item_setting};
-        item_settings.createSubItems(layout_id);
-
-        View subItemSettings=item_settings.getSubItemView(0);
-        TextView logOutBtn=subItemSettings.findViewById(R.id.settings_log_out);
-        TextView changeInfoBtn=subItemSettings.findViewById(R.id.settings_change_info);
-        logOutBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                AuthUI.getInstance()
-                        .signOut((FragmentActivity) getActivity())
-                        .addOnCompleteListener(new OnCompleteListener<Void>() {
-                            public void onComplete(@NonNull Task<Void> task) {
-
-                                startActivity(new Intent(getActivity(), SignInActivity.class));
-                                Toast.makeText(getActivity(), "Log out successfully", Toast.LENGTH_SHORT).show();
-                                getActivity().finish();
-
-
-                            }
-                        });
-
-            }
-
-        });
-    }
 
     void setTeachersView(){
         item_teachers=expandingList.createNewItem(R.layout.expanding_layout);

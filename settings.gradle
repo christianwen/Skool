@@ -1,1 +1,2 @@
 include ':app', ':WheelPicker-1.1.2', ':WheelPicker', ':example', ':expanding-view'
+include ':WheelPicker'

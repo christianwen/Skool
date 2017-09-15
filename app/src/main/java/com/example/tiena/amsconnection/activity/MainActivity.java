@@ -123,6 +123,18 @@ public class MainActivity extends FragmentActivity implements ChatFragment.OnFra
 
         if(getIntent()!=null&&getIntent().getExtras()!=null){
             Bundle bundle=getIntent().getExtras();
+            if(bundle.getString("class_id",null)!=null) {
+                CLASS_ID = bundle.getString("class_id");
+            }
+        }
+
+        chatFragment = ChatFragment.newInstance("class_id",CLASS_ID);
+        moreFragment = MoreFragment.newInstance("class_id",CLASS_ID);
+        ft.add(R.id.content,homeFragment).add(R.id.content,chatFragment).add(R.id.content,notiFragment).add(R.id.content,moreFragment).commit();
+
+        if(getIntent()!=null&&getIntent().getExtras()!=null){
+            Bundle bundle=getIntent().getExtras();
+
             if(bundle.getString("fragment",null)!=null) {
                 View notiButton = findViewById(R.id.navigation_notifications);
                 notiButton.performClick();
@@ -132,17 +144,13 @@ public class MainActivity extends FragmentActivity implements ChatFragment.OnFra
                 homeBtn=findViewById(R.id.navigation_home);
                 homeBtn.performClick();
             }
-            if(bundle.getString("class_id",null)!=null){
-                CLASS_ID=bundle.getString("class_id");
-            }
+
         }
 
 
-        chatFragment = ChatFragment.newInstance("class_id",CLASS_ID);
-        moreFragment = MoreFragment.newInstance("class_id",CLASS_ID);
 
 
-        ft.add(R.id.content,homeFragment).add(R.id.content,chatFragment).add(R.id.content,notiFragment).add(R.id.content,moreFragment).commit();
+
         Bundle args=new Bundle();
 
         args.putString("class_id",CLASS_ID);

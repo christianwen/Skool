@@ -21,6 +21,11 @@ android {
     }
     productFlavors {
     }
+
+    configurations {
+        all*.exclude group: 'com.android.support', module: 'support-v4'
+        //all*.exclude group: 'com.android.support', module: 'support-annotations'
+    }
 }
 
 dependencies {
@@ -58,7 +63,7 @@ dependencies {
     compile 'com.firebaseui:firebase-ui:2.3.0'
     compile 'com.facebook.android:facebook-android-sdk:4.22.1'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
-    compile 'cn.aigestudio.wheelpicker:WheelPicker:1.1.2'
+    //compile 'cn.aigestudio.wheelpicker:WheelPicker:1.1.2'
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'com.github.techery:properratingbar:0.0.5'
     compile 'com.ramotion.foldingcell:folding-cell:1.2.1'

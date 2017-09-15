@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+    <string-array name="item_names">
+        <item>Timetable</item>
+        <item>Teachers</item>
+        <item>Log out</item>
+    </string-array>
+    <integer-array name="icon_ids">
+
+    </integer-array>
+
+</resources>
