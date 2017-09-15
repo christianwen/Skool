@@ -80,7 +80,7 @@
             android:layout_gravity="center_vertical"
             android:background="?android:attr/selectableItemBackground"
             android:drawableStart="@drawable/ic_confirm"
-            android:drawablePadding="0dp"
+            android:drawablePadding="-21dp"
             android:text="Confirm"
             android:textAllCaps="false"
 
@@ -96,6 +96,7 @@
             android:layout_gravity="center_vertical"
             android:background="?android:attr/selectableItemBackground"
             android:drawableStart="@drawable/ic_comment"
+            android:drawablePadding="-5dp"
             android:text="Comment"
 
             android:textAllCaps="false"
@@ -111,6 +112,8 @@
             android:layout_gravity="center_vertical"
             android:background="?android:attr/selectableItemBackground"
             android:drawableStart="@drawable/ic_remind"
+            android:drawablePadding="-3dp"
+
             android:paddingRight="10dp"
             android:text="Remind me"
             android:textAllCaps="false"

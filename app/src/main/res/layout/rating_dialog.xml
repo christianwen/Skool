@@ -12,11 +12,9 @@
         android:layout_margin="10dp"
         app:prb_totalTicks="6"
         app:prb_defaultRating="0"
-        app:prb_tickNormalDrawable="@drawable/rating_star_icon_deactive_small"
-        app:prb_tickSelectedDrawable="@drawable/rating_star_icon_active_small"
+        app:prb_tickNormalDrawable="@drawable/ic_rating_star_36dp"
+        app:prb_tickSelectedDrawable="@drawable/ic_rating_star_active_36dp"
         app:prb_clickable="false"
-
-
         />
     <EditText
         android:id="@+id/rating_comment"

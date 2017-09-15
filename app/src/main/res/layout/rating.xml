@@ -33,11 +33,10 @@
         android:layout_height="20dp"
         app:prb_totalTicks="6"
         app:prb_defaultRating="0"
-        app:prb_tickNormalDrawable="@drawable/rating_star_icon_deactive_extra_small"
-        app:prb_tickSelectedDrawable="@drawable/rating_star_icon_active_extra_small"
+        app:prb_tickNormalDrawable="@drawable/ic_rating_star"
+        app:prb_tickSpacing="-1dp"
+        app:prb_tickSelectedDrawable="@drawable/ic_rating_star_active"
         app:prb_clickable="false"
-
-
         android:layout_alignTop="@+id/user_name"
         android:layout_toEndOf="@+id/user_name" />
 </RelativeLayout>

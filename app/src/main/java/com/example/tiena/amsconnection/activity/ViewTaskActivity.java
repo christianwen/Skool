@@ -137,7 +137,9 @@ public class ViewTaskActivity extends Activity implements View.OnClickListener,T
     @Override
     public void onCommentButtonClicked() {
         Log.d("action","click on comment button");
-        ((EditText)findViewById(R.id.comment_edit_text)).performClick();
+        EditText commentEdt = findViewById(R.id.comment_edit_text);
+        commentEdt.requestFocus();
+        showKeyboard(commentEdt);
 
     }
 }

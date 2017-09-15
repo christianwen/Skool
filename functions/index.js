@@ -32,7 +32,8 @@ exports.pushTask=functions.database.ref("tasks/{task_id}/basics").onCreate(event
     console.log("class id",class_id);
     var promise1 = admin.database().ref('classes/'+class_id+'/tasks/'+task_id).set(true);
 
-    content=data.content;
+    var content=data.content;
+    console.log("content",content);
     var promise2 = loadStudents(class_id).then(tokens => {
             console.log('tokens: ',tokens);
 
