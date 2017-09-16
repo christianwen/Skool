@@ -51,14 +51,15 @@
 
         android:id="@+id/comment_edit_text"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
+        android:layout_height="48dp"
+        android:layout_alignParentBottom="true"
+
+        android:background="@color/white"
         android:ems="10"
         android:hint="Write a comment..."
         android:inputType="text"
-        android:background="@color/white"
         android:paddingLeft="10dp"
-        android:layout_alignParentBottom="true"
-        />
+        android:textSize="16sp" />
 
     <ImageButton
 
@@ -67,8 +68,16 @@
         android:layout_height="wrap_content"
         android:background="@drawable/ic_send"
         android:backgroundTint="#4caf50"
-
-        android:layout_marginRight="0dp"
+        android:layout_marginBottom="6dp"
+        android:layout_marginRight="3dp"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignEnd="@+id/view2" />
+
+    <View
+        android:layout_above="@id/comment_edit_text"
+        android:layout_width="375dp"
+        android:layout_centerHorizontal="true"
+        android:layout_height="0.5px"
+        android:background="@android:color/darker_gray"
+        android:id="@+id/view2" />
 </RelativeLayout>

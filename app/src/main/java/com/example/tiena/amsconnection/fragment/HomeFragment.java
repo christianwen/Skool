@@ -11,6 +11,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -96,13 +97,15 @@ public  class HomeFragment extends Fragment{
                 }
                 for(int i=task_ids.size()-1;i>=0;i--){
                     TaskViewFragment fragment = TaskViewFragment.newInstance(task_ids.get(i));
-                    FrameLayout container = new FrameLayout(HomeFragment.this.getActivity());
-                    RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                    params.setMargins(0,50,0,0);
+                    LinearLayout container = new LinearLayout(HomeFragment.this.getActivity());
+                    LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+
+                    params.setMargins(0,0,0,40);
                     container.setLayoutParams(params);
                     int id = View.generateViewId();
                     container.setId(id);
                     FragmentTransaction ft = getChildFragmentManager().beginTransaction();
+
                     ft.add(id,fragment).commit();
                     fragmentContainer.addView(container);
                 }

@@ -51,9 +51,9 @@ public class NotiHolder extends RecyclerView.ViewHolder implements View.OnClickL
         dbRef.child("tasks/"+key+"/details/reads/"+user.getUid()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                if(dataSnapshot.getValue()==null){
-                    itemView.setBackgroundColor(itemView.getContext().getResources().getColor(R.color.SpringGreen));
-                }
+                int color = dataSnapshot.getValue()==null ? R.color.SpringGreen : R.color.white;
+                itemView.setBackgroundColor(itemView.getContext().getResources().getColor(color));
+
             }
 
             @Override
