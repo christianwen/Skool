@@ -10,7 +10,9 @@ import android.widget.TextView;
 
 import com.example.tiena.amsconnection.R;
 import com.example.tiena.amsconnection.activity.ChatActivity;
+import com.example.tiena.amsconnection.helperclass.AnythingHelper;
 import com.example.tiena.amsconnection.helperclass.CircleTransform;
+import com.example.tiena.amsconnection.item.Message;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -40,9 +42,9 @@ public class ChatRoomHolder extends RecyclerView.ViewHolder implements View.OnCl
         itemView.setOnClickListener(this);
     }
 
-    public void init(String key){
+    public void init(final String key){
         this.key = key;
-        DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference();
+        final DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference();
         dbRef.child("chat_rooms/"+key+"/basics").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -62,17 +64,46 @@ public class ChatRoomHolder extends RecyclerView.ViewHolder implements View.OnCl
             }
         });
 
-        dbRef.child("chat_rooms/"+key+"/statistics").addValueEventListener(new ValueEventListener() {
+        dbRef.child("chat_rooms/"+key+"/last_message_id").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                String lastMessage = dataSnapshot.child("last_message").getValue(String.class);
-                mLastMessage.setText(lastMessage);
-                Long lastMessageTime = dataSnapshot.child("last_message_time").getValue(Long.class);
-                if(lastMessageTime!=null) {
-                    Date date = new Date(lastMessageTime);
-                    SimpleDateFormat sdf = new SimpleDateFormat("HH:mm", Locale.ENGLISH);
-                    mLastMessageTime.setText(sdf.format(date));
-                }
+
+                final String lastMessageId = dataSnapshot.getValue(String.class);
+                dbRef.child("messages/"+key+"/"+lastMessageId).addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        Message lastMessage = dataSnapshot.getValue(Message.class);
+                        if(lastMessage!=null) {
+
+                            final String content = lastMessage.content;
+                            dbRef.child("students/"+lastMessage.from+"/name").addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(DataSnapshot dataSnapshot) {
+                                    String name = dataSnapshot.getValue(String.class);
+                                    int max_length = content.length() < 30 ? content.length() : 30;
+                                    String text = name+": "+content.substring(0,max_length-1)+"...";
+                                    mLastMessage.setText(text);
+                                }
+
+                                @Override
+                                public void onCancelled(DatabaseError databaseError) {
+
+                                }
+                            });
+
+
+                            if(lastMessage.time_created != null){
+                                mLastMessageTime.setText(AnythingHelper.convertTimestampToDate(lastMessage.time_created,"HH:mm"));
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+
             }
 
             @Override

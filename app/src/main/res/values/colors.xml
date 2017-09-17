@@ -172,5 +172,7 @@
     <color name="ConfirmActive">#009688</color>
     <color name="CommentActive">#3f51b5</color>
     <color name="ActionInactive">#9e9e9e</color>
+    <color name="TeaGreen">#78d0f0c0</color>
+    <color name="JungleGreen">#29AB87</color>
 </resources>
 

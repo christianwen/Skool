@@ -204,3 +204,15 @@ exports.deleteComment = functions.database.ref("comments/{comment_id}/task_id").
     
     return Promise.all([promise1,promise2]);
 });
+
+/*exports.pushMessage = functions.database.ref("messages/{room_id}/{message_id}").onCreate(event=>{
+    var message_id = event.params.message_id;
+    var data = event.data.val();
+
+    var ref = admin.database().ref("chat_rooms/"+data.to);
+    var promise1 = ref.child("messages/"+message_id).set(data.from);
+    var promise2 = ref.child("statistics/last_message").set(data.content);
+    var promise3 = ref.child("statistics/last_message_time").set(data.time_created);
+
+    return Promise.all([promise1,promise2,promise3]);
+});*/

@@ -53,11 +53,6 @@ public class NotiFragment extends Fragment {
 
         View notiFragmentLayout=inflater.inflate(R.layout.noti_fragment,container,false);
         notiList=notiFragmentLayout.findViewById(R.id.notiList);
-        LinearLayoutManager manager = new LinearLayoutManager(activity);
-        manager.setReverseLayout(true);
-        manager.setStackFromEnd(true);
-        notiList.setLayoutManager(manager);
-        notiList.setAdapter(mAdapter);
         mDatabase=FirebaseDatabase.getInstance();
         FirebaseUser user= FirebaseAuth.getInstance().getCurrentUser();
         if(user==null)return null;
@@ -96,6 +91,11 @@ public class NotiFragment extends Fragment {
 
     void setRecyclerAdapter(){
 
+        LinearLayoutManager manager = new LinearLayoutManager(activity);
+        manager.setReverseLayout(true);
+        manager.setStackFromEnd(true);
+        notiList.setLayoutManager(manager);
+
         mAdapter = new FirebaseRecyclerAdapter<Boolean, NotiHolder>(
                 Boolean.class,
                 R.layout.notification,
@@ -107,7 +107,7 @@ public class NotiFragment extends Fragment {
                 holder.init(key);
             }
         };
-        notiList.setHasFixedSize(true);
+        //notiList.setHasFixedSize(true);
         notiList.setItemViewCacheSize(30);
         notiList.setDrawingCacheEnabled(true);
         notiList.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
